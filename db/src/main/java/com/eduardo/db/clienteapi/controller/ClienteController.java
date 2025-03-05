@@ -4,7 +4,9 @@ import com.eduardo.db.clienteapi.model.Cliente;
 import com.eduardo.db.clienteapi.repository.ClienteRepository;
 import com.eduardo.db.clienteapi.service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -15,32 +17,31 @@ public class ClienteController {
     @Autowired
     private ClienteService clienteService;
 
-    @Autowired
-    private ClienteRepository clienteRepository;
 
     //aqui tá o endpoint pra listar os clientes
     @GetMapping
     public List<Cliente> listarClientes() {
-        return clienteRepository.findAll();
+        return clienteService.listarClientes();
     }
 
     //aqui eu adiciono um novo cliente
     @PostMapping
-    public Cliente criaCliente(@RequestBody Cliente cliente) {
-        return clienteRepository.save(cliente);
+    public Cliente criarCliente(@RequestBody Cliente cliente) {
+        return clienteService.criarCliente(cliente);
     }
 
-    @PutMapping("/clientes/{id}")
+    @PutMapping("/{id}")
     public Cliente atualizarCliente(@PathVariable Long id, @RequestBody Cliente cliente) {
-        return clienteRepository.findById(id).map(existingCliente -> {
-            existingCliente.setNome(cliente.getNome());
-            existingCliente.setEmail(cliente.getEmail());
-            return clienteRepository.save(existingCliente);
-        }).orElseThrow();
+        return clienteService.atualizarCliente(id, cliente)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não encontrado"));
     }
 
-    @DeleteMapping("/clientes/{id}")
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletarCliente(@PathVariable Long id) {
-        clienteRepository.deleteById(id);
+        if (!clienteService.deletarCliente(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não encontrado");
+        }
     }
 }
+
