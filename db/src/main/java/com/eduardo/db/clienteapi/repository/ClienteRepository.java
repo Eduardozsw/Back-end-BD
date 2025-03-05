@@ -9,7 +9,4 @@ import java.util.Optional;
 
 @Repository
 public interface ClienteRepository extends JpaRepository<Cliente, Long> {
-
-    @Query("SELECT MAX(c.id) FROM Cliente c")
-    Optional<Long> findMaxId();
 }
