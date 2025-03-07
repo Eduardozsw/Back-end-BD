@@ -1,16 +1,21 @@
 
 function Criar() {
+
   return (
-    <div className="flex flex-col pl-10 gap-y-5">
+    <div className="flex flex-col pl-10 gap-y-5 text-black">
       <div>
-        <input type="text" className="border h-8 w-64 rounded-md border-black placeholder:text-gray-300" placeholder="Nome" />
+        <p>Nome</p>
+        <input type="text" className="border h-8 w-64 rounded-md border-black placeholder:text-gray-400 text-center" placeholder="João Paulo" />
       </div>
       <div>
-        <input type="text" className="border h-8 w-64 rounded-md border-black placeholder:text-gray-300" placeholder="você@email.com" />
+      <p>Email</p>
+        <input type="text" className="border h-8 w-64 rounded-md border-black placeholder:text-gray-400 text-center" placeholder="você@email.com" />
       </div>
       <div>
-        <input type="text" className="border h-8 w-64 rounded-md border-black placeholder:text-gray-300" placeholder="Telefone" />
+        <p>Telefone</p>
+        <input type="text" className="border h-8 w-64 rounded-md border-black placeholder:text-gray-400 text-center invalid:border-red-900" placeholder="(xx) x xxxx-xxxx" />
       </div>
+      <input type="submit" className="text-black cursor-pointer" />
     </div>
   )
 }
